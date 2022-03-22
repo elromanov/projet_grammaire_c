@@ -86,8 +86,14 @@ void faire_noeud(t_token typeNoeud, char* contenu){
             inserer_cadet(noeud_temp, noeud);
         }
     }
-    
-    
+    noeud_courant = noeud;
+}
+
+void faire_noeud_mot(char* contenu){
+    const char* content = (const char*) contenu;
+    p_noeud nouveau_noeud = NULL;
+    creer_noeud(&nouveau_noeud, MOT, "pourquoi la variable passe pas ?", NULL, NULL, NULL, NULL, NULL);
+    inserer_cadet(noeud_courant, nouveau_noeud);
 }
 
 void lire_char(){
@@ -133,7 +139,7 @@ void consommerMot(){
         balise_fermante = 0;
         supprimer_espaces_mot();
         if(strlen(currentWord) > 0){
-            faire_noeud(MOT, currentWord);
+            faire_noeud_mot(currentWord);
             // printf("\"%s\"\n", currentWord);
         }
         vider_mot();
@@ -206,9 +212,9 @@ void commencer_lecture(){
         consommerChar();
         // test();
     }
-    debugger_noeud(premier_noeud);
+    // debugger_noeud(premier_noeud->les_parentes[GRAND_FRERE]->les_parentes[DERNIER_FILS]->les_parentes[DERNIER_FILS]->les_parentes[DERNIER_FILS]);
     // printf("%d", nbChevrons);
-    // affichage();
+    affichage();
     // debugger_noeud(premier_noeud->les_parentes[DERNIER_FILS]);
 }
 

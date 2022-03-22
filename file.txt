@@ -1,8 +1,8 @@
 <document>
     <section>
-        <titre> </titre>
+        <titre> Salut </titre>
     </section>
 </document>
 <annexe>
-    <titre> </titre>
+    <titre> Bonjour </titre>
 </annexe>
