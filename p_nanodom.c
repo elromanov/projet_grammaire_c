@@ -3,7 +3,7 @@
 #include <string.h>
 
 #include "p_nanodom.h"
-#include "p_texte_enrichi.c"
+#include "p_texte_enrichi.h"
 
 const char* t_token_image(t_token ceci){
     char* image_token[] = {"DOCUMENT", "ANNEXE", "SECTION", "TITRE", "LISTE", "ITEM", "IMPORTANT", "RETOUR_A_LA_LIGNE", "MOT"};

@@ -1,7 +1,8 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+
 #include "p_texte_enrichi.h"
-#include "stdlib.h"
-#include "stdio.h"
-#include "string.h"
 
 // #define LONGUEUR_LIGNE 80
 

@@ -7,56 +7,87 @@
 
 char currentWord[TAILLE_MAX_TEXTE];
 char chevronActuel[TAILLE_MAX_TEXTE];
-int noeud_trouve = 0;
+char myChar;
+
+int premier_noeud_existe = 0;
 int iteratorMot = 0;
 int iterorChevron = 0;
-char myChar;
 int chevronTrouve = 0;
 int nbChevrons = 0;
+int balise_fermante = 0;
+
 p_noeud premier_noeud;
 p_noeud noeud_courant;
 FILE* file;
 
 void affichage_aux(p_noeud noeud){
-    if(noeud->les_parentes[GRAND_FRERE] == NULL){
-        afficher_elabore(noeud);
+    if(noeud->les_parentes[PERE] == NULL){
+        if(noeud->les_parentes[GRAND_FRERE] == NULL){
+            // debugger_noeud(noeud);
+            afficher_elabore(noeud);
+        } else {
+            affichage_aux(noeud->les_parentes[GRAND_FRERE]);
+        }
+        // afficher_elabore(noeud->les_parentes[PREMIER_FILS]->les_parentes[PREMIER_FILS]);
+        // debugger_noeud(noeud->les_parentes[PERE]);
     } else {
-        affichage_aux(noeud->les_parentes[GRAND_FRERE]);
+        affichage_aux(noeud->les_parentes[PERE]);
     }
 }
 
 void affichage(){
     if(premier_noeud->les_parentes[GRAND_FRERE] == NULL){
-        afficher_elabore(premier_noeud);
+        if(premier_noeud->les_parentes[PERE] == NULL){
+            // debugger_noeud(premier_noeud);
+            // debugger_noeud(premier_noeud->les_parentes[PREMIER_FILS]);
+            // debugger_noeud(premier_noeud->les_parentes[PREMIER_FILS]->les_parentes[PREMIER_FILS]->les_parentes[PREMIER_FILS]);
+            afficher_elabore(premier_noeud);
+        } else {
+            affichage_aux(premier_noeud->les_parentes[PERE]);
+        }
     } else {
         affichage_aux(premier_noeud->les_parentes[GRAND_FRERE]);
+    }
+    // afficher_elabore(premier_noeud->les_parentes[PERE]->les_parentes[PERE]->les_parentes[PERE]->les_parentes[PERE]->les_parentes[PERE]);
+    // debugger_noeud(premier_noeud);
+    // afficher_elabore(premier_noeud);
+}
+
+void inserer_dernier(p_noeud noeud, p_noeud orphelin, int interateur){
+    printf("%d", interateur);
+    debugger_noeud(noeud);
+    if(interateur == 0){
+        if(noeud->les_parentes[PREMIER_FILS] == NULL){
+            inserer_aine(noeud, orphelin);
+        } else {
+            inserer_cadet(noeud, orphelin);
+        }
+    } else {
+        inserer_dernier(noeud->les_parentes[DERNIER_FILS], orphelin, interateur-1);
     }
 }
 
 void faire_noeud(t_token typeNoeud, char* contenu){
-    p_noeud noeud;
-    creer_noeud(noeud, typeNoeud, NULL, NULL, NULL, NULL, NULL, NULL);
-
-    if(noeud_trouve == 0){
+    // printf("NB CHEVRONS: %d\n", nbChevrons);
+    p_noeud noeud = NULL;
+    creer_noeud(&noeud, typeNoeud, contenu, NULL, NULL, NULL, NULL, NULL);
+    if(premier_noeud_existe == 0){
         premier_noeud = noeud;
+        premier_noeud_existe = 1;
     } else {
-        if(nbChevrons == 0){
-            inserer_apres(premier_noeud, premier_noeud);
-            premier_noeud = noeud;
-        }
         if(nbChevrons == 1){
-            if(premier_noeud->les_parentes[PREMIER_FILS] == NULL){
-                inserer_aine(premier_noeud, noeud);
-            } else if(premier_noeud->les_parentes[DERNIER_FILS] == NULL){
-                inserer_cadet(premier_noeud, noeud);
-            } else {
-                inserer_cadet(premier_noeud, noeud);
-            }
+            inserer_apres(premier_noeud, noeud);
+            premier_noeud = noeud;
         } else {
-            inserer_cadet(noeud_courant, noeud);
+            p_noeud noeud_temp = premier_noeud;
+            for(int i = 0; i < nbChevrons - 2; i++){
+                noeud_temp = noeud_temp->les_parentes[DERNIER_FILS];
+            }
+            inserer_cadet(noeud_temp, noeud);
         }
     }
-    noeud_courant = noeud;
+    
+    
 }
 
 void lire_char(){
@@ -99,15 +130,16 @@ void supprimer_espaces_mot(){
 
 void consommerMot(){
     if(myChar == '<'){
-        nbChevrons++;
+        balise_fermante = 0;
         supprimer_espaces_mot();
         if(strlen(currentWord) > 0){
             faire_noeud(MOT, currentWord);
-            printf("\"%s\"\n", currentWord);
+            // printf("\"%s\"\n", currentWord);
         }
         vider_mot();
         iteratorMot = 0;
         chevronTrouve = 1;
+        nbChevrons++;
     } else {
         if(iteratorMot == 0){
             if(myChar != ' ' && myChar != '\n' && myChar != '\t' && myChar != '\r'){
@@ -124,17 +156,17 @@ void consommerMot(){
 void faire_noeud_chevron(){
         if(strcmp(chevronActuel, "document") == 0){
             faire_noeud(DOCUMENT, NULL);
-        } else if(strcmp(chevronActuel, "annexe")){
+        } else if(strcmp(chevronActuel, "annexe") == 0){
             faire_noeud(ANNEXE, NULL);
-        } else if(strcmp(chevronActuel, "section")){
+        } else if(strcmp(chevronActuel, "section") == 0){
             faire_noeud(SECTION, NULL);   
-        } else if(strcmp(chevronActuel, "titre")){
+        } else if(strcmp(chevronActuel, "titre") == 0){
             faire_noeud(TITRE, NULL);
-        } else if(strcmp(chevronActuel, "liste")){
+        } else if(strcmp(chevronActuel, "liste") == 0){
             faire_noeud(LISTE, NULL);
-        } else if(strcmp(chevronActuel, "item")){
+        } else if(strcmp(chevronActuel, "item") == 0){
             faire_noeud(ITEM, NULL);
-        } else if(strcmp(chevronActuel, "important")){
+        } else if(strcmp(chevronActuel, "important") == 0){
             faire_noeud(IMPORTANT, NULL);
         } else {
             faire_noeud(RETOUR_A_LA_LIGNE, NULL);
@@ -147,13 +179,15 @@ void consommerChevron(){
         chevronActuel[iterorChevron] = myChar;
         iterorChevron++;
         if(myChar == '/'){
+            balise_fermante = 1;
             nbChevrons -= 2;
         }
     } else {
         iterorChevron = 0;
         chevronTrouve = 0;
-        faire_noeud_chevron();
-        printf("%s\n", chevronActuel);
+        if(balise_fermante == 0){
+            faire_noeud_chevron();
+        }
         vider_chevron();
     }
 }
@@ -172,8 +206,10 @@ void commencer_lecture(){
         consommerChar();
         // test();
     }
+    debugger_noeud(premier_noeud);
     // printf("%d", nbChevrons);
-    affichage();
+    // affichage();
+    // debugger_noeud(premier_noeud->les_parentes[DERNIER_FILS]);
 }
 
 int main(int argc, char** argv){

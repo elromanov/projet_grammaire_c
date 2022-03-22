@@ -1,10 +1,8 @@
 <document>
     <section>
-        <titre> Sujet de projet nanoml </titre>
+        <titre> </titre>
     </section>
 </document>
 <annexe>
-    Auteur: B. Weinberg
-    Relecteur: J. Jacques
-    Relecteur: N. Gouvy
+    <titre> </titre>
 </annexe>
