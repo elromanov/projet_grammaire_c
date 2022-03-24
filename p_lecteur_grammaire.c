@@ -19,6 +19,7 @@ int balise_fermante = 0;
 p_noeud premier_noeud;
 p_noeud noeud_courant;
 FILE* file;
+FILE* mon_fichier;
 
 void affichage_aux(p_noeud noeud){
     if(noeud->les_parentes[PERE] == NULL){
@@ -225,11 +226,64 @@ void commencer_lecture(){
         consommerChar();
         // test();
     }
+    mon_fichier = fopen("save.txt","w");
     // debugger_noeud(premier_noeud->les_parentes[GRAND_FRERE]->les_parentes[DERNIER_FILS]->les_parentes[DERNIER_FILS]->les_parentes[DERNIER_FILS]);
     // printf("%d", nbChevrons);
     affichage();
-    // debugger_noeud(premier_noeud->les_parentes[DERNIER_FILS]);
+    // mon_sauvegarder_enrichi(premier_noeud, mon_fichier);
+    if(premier_noeud->les_parentes[GRAND_FRERE] == NULL){
+        if(premier_noeud->les_parentes[PERE] == NULL){
+            mon_sauvegarder_enrichi(premier_noeud,mon_fichier);
+        } else {
+            mon_sauvegarder_enrichi(premier_noeud->les_parentes[PERE],mon_fichier);
+        }
+    } else {
+        mon_sauvegarder_enrichi(premier_noeud->les_parentes[GRAND_FRERE],mon_fichier);
+    }
 }
+
+void mon_sauvegarder_enrichi_aux(p_noeud ceci, int decalage, FILE* mon_fichier){
+     if(ceci != NULL){
+        if(ceci->les_parentes[GRAND_FRERE] != NULL){
+            if(ceci->les_parentes[GRAND_FRERE]->l_etiquette == MOT && ceci->l_etiquette == MOT){
+                afficher_espaces(1);
+            } else {
+                afficher_espaces(decalage*4);
+            }
+        } else {
+            afficher_espaces(decalage*4);
+        }
+        if(ceci->l_etiquette != MOT){
+             fprintf(mon_fichier,"<%s>\n", t_token_image(ceci->l_etiquette));
+        } else {
+            fprintf(mon_fichier,"%s", ceci->le_contenu);
+            if(ceci->les_parentes[PETIT_FRERE] != NULL){
+                if(ceci->les_parentes[PETIT_FRERE]->l_etiquette != MOT){
+                    fprintf(mon_fichier,"\n");
+                }
+            } else {
+                fprintf(mon_fichier,"\n");
+            }
+        }
+        if(ceci->les_parentes[PREMIER_FILS]){
+            mon_sauvegarder_enrichi_aux(ceci->les_parentes[PREMIER_FILS], decalage+1,mon_fichier);
+        } else {
+            mon_sauvegarder_enrichi_aux(ceci->les_parentes[DERNIER_FILS], decalage+1,mon_fichier);
+        }
+        if(ceci->l_etiquette != MOT){
+            afficher_espaces(decalage*4);
+            fprintf(mon_fichier,"</%s>\n", t_token_image(ceci->l_etiquette));
+        }
+        mon_sauvegarder_enrichi_aux(ceci->les_parentes[PETIT_FRERE], decalage,mon_fichier);
+    }
+}
+
+void mon_sauvegarder_enrichi(p_noeud mon_noeud, FILE* mon_fichier){
+    mon_sauvegarder_enrichi_aux(mon_noeud,0,mon_fichier);
+}
+// void sauvegarder_enrichi_texte(){
+//     sauvegarder_enrichi(premier_noeud, mon_fichier);
+// }
 
 int main(int argc, char** argv){
     if(argc > 1){

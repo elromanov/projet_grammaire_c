@@ -1,0 +1,12 @@
+<DOCUMENT>
+<SECTION>
+<TITRE>
+Salut
+</TITRE>
+</SECTION>
+</DOCUMENT>
+<ANNEXE>
+<TITRE>
+Bonjour
+</TITRE>
+</ANNEXE>
