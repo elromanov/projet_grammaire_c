@@ -89,12 +89,25 @@ void faire_noeud(t_token typeNoeud, char* contenu){
     noeud_courant = noeud;
 }
 
+// void faire_noeud_mot(char* contenu){
+
+//     const char*content = (const char*) contenu;
+//     p_noeud nouveau_noeud = NULL;
+//     creer_noeud(&nouveau_noeud, MOT, "pourquoi la variable passe pas ?", NULL, NULL, NULL, NULL, NULL);
+//     inserer_cadet(noeud_courant, nouveau_noeud);
+// }
 void faire_noeud_mot(char* contenu){
-    const char* content = (const char*) contenu;
+    char* content = malloc(sizeof(char)*(strlen(contenu)+1));
+    strcpy(content,contenu);
     p_noeud nouveau_noeud = NULL;
-    creer_noeud(&nouveau_noeud, MOT, "pourquoi la variable passe pas ?", NULL, NULL, NULL, NULL, NULL);
+    creer_noeud(&nouveau_noeud, MOT,content, NULL, NULL, NULL, NULL, NULL);
     inserer_cadet(noeud_courant, nouveau_noeud);
 }
+// void faire_noeud_mot(char* contenu){
+//     p_noeud nouveau_noeud = NULL;  
+//     creer_noeud(&nouveau_noeud, MOT, *contenu, NULL, NULL, NULL, NULL, NULL);
+//     inserer_cadet(noeud_courant, nouveau_noeud);
+// }
 
 void lire_char(){
     myChar = fgetc(file);

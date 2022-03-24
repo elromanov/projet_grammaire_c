@@ -1,0 +1,11 @@
+{
+    "terminal.integrated.defaultProfile.windows": "MSYS2",
+    "terminal.integrated.env.windows":{
+        "CHERE_INVOKING":"1",
+        "MSYSTEM": "MINGW64",
+    },
+    "files.associations": {
+        "p_noeud.h": "c",
+        "stdlib.h": "c"
+    }
+}
