@@ -30,8 +30,6 @@ void affichage_aux(p_noeud noeud){
         } else {
             affichage_aux(noeud->les_parentes[GRAND_FRERE]);
         }
-        // afficher_elabore(noeud->les_parentes[PREMIER_FILS]->les_parentes[PREMIER_FILS]);
-        // debugger_noeud(noeud->les_parentes[PERE]);
     } else {
         affichage_aux(noeud->les_parentes[PERE]);
     }
@@ -40,9 +38,6 @@ void affichage_aux(p_noeud noeud){
 void affichage(){
     if(premier_noeud->les_parentes[GRAND_FRERE] == NULL){
         if(premier_noeud->les_parentes[PERE] == NULL){
-            // debugger_noeud(premier_noeud);
-            // debugger_noeud(premier_noeud->les_parentes[PREMIER_FILS]);
-            // debugger_noeud(premier_noeud->les_parentes[PREMIER_FILS]->les_parentes[PREMIER_FILS]->les_parentes[PREMIER_FILS]);
             afficher_elabore(premier_noeud);
         } else {
             affichage_aux(premier_noeud->les_parentes[PERE]);
@@ -50,9 +45,6 @@ void affichage(){
     } else {
         affichage_aux(premier_noeud->les_parentes[GRAND_FRERE]);
     }
-    // afficher_elabore(premier_noeud->les_parentes[PERE]->les_parentes[PERE]->les_parentes[PERE]->les_parentes[PERE]->les_parentes[PERE]);
-    // debugger_noeud(premier_noeud);
-    // afficher_elabore(premier_noeud);
 }
 
 void inserer_dernier(p_noeud noeud, p_noeud orphelin, int interateur){
@@ -70,7 +62,6 @@ void inserer_dernier(p_noeud noeud, p_noeud orphelin, int interateur){
 }
 
 void faire_noeud(t_token typeNoeud, char* contenu){
-    // printf("NB CHEVRONS: %d\n", nbChevrons);
     p_noeud noeud = NULL;
     creer_noeud(&noeud, typeNoeud, contenu, NULL, NULL, NULL, NULL, NULL);
     if(premier_noeud_existe == 0){
@@ -91,13 +82,6 @@ void faire_noeud(t_token typeNoeud, char* contenu){
     noeud_courant = noeud;
 }
 
-// void faire_noeud_mot(char* contenu){
-
-//     const char*content = (const char*) contenu;
-//     p_noeud nouveau_noeud = NULL;
-//     creer_noeud(&nouveau_noeud, MOT, "pourquoi la variable passe pas ?", NULL, NULL, NULL, NULL, NULL);
-//     inserer_cadet(noeud_courant, nouveau_noeud);
-// }
 void faire_noeud_mot(char* contenu){
     char* content = malloc(sizeof(char)*(strlen(contenu)+1));
     strcpy(content,contenu);
@@ -105,20 +89,9 @@ void faire_noeud_mot(char* contenu){
     creer_noeud(&nouveau_noeud, MOT,content, NULL, NULL, NULL, NULL, NULL);
     inserer_cadet(noeud_courant, nouveau_noeud);
 }
-// void faire_noeud_mot(char* contenu){
-//     p_noeud nouveau_noeud = NULL;  
-//     creer_noeud(&nouveau_noeud, MOT, *contenu, NULL, NULL, NULL, NULL, NULL);
-//     inserer_cadet(noeud_courant, nouveau_noeud);
-// }
 
 void lire_char(){
     myChar = fgetc(file);
-}
-
-void passer_espaces(){
-    while(myChar == ' ' || myChar == '\t' || myChar == '\n' || myChar == '\r'){
-        lire_char();
-    }
 }
 
 void vider_mot(){
@@ -155,7 +128,6 @@ void consommerMot(){
         supprimer_espaces_mot();
         if(strlen(currentWord) > 0){
             faire_noeud_mot(currentWord);
-            // printf("\"%s\"\n", currentWord);
         }
         vider_mot();
         iteratorMot = 0;
@@ -222,59 +194,13 @@ void consommerChar(){
     }
 }
 
-// void mon_sauvegarder_enrichi_aux(p_noeud ceci, int decalage, FILE* mon_fichier){
-//      if(ceci != NULL){
-//         if(ceci->les_parentes[GRAND_FRERE] != NULL){
-//             if(ceci->les_parentes[GRAND_FRERE]->l_etiquette == MOT && ceci->l_etiquette == MOT){
-//                 afficher_espaces(1);
-//             } else {
-//                 afficher_espaces(decalage*4);
-//             }
-//         } else {
-//             afficher_espaces(decalage*4);
-//         }
-//         if(ceci->l_etiquette != MOT){
-//              fprintf(mon_fichier,"<%s>\n", t_token_image(ceci->l_etiquette));
-//         } else {
-//             fprintf(mon_fichier,"%s", ceci->le_contenu);
-//             if(ceci->les_parentes[PETIT_FRERE] != NULL){
-//                 if(ceci->les_parentes[PETIT_FRERE]->l_etiquette != MOT){
-//                     fprintf(mon_fichier,"\n");
-//                 }
-//             } else {
-//                 fprintf(mon_fichier,"\n");
-//             }
-//         }
-//         if(ceci->les_parentes[PREMIER_FILS]){
-//             mon_sauvegarder_enrichi_aux(ceci->les_parentes[PREMIER_FILS], decalage+1,mon_fichier);
-//         } else {
-//             mon_sauvegarder_enrichi_aux(ceci->les_parentes[DERNIER_FILS], decalage+1,mon_fichier);
-//         }
-//         if(ceci->l_etiquette != MOT){
-//             afficher_espaces(decalage*4);
-//             fprintf(mon_fichier,"</%s>\n", t_token_image(ceci->l_etiquette));
-//         }
-//         mon_sauvegarder_enrichi_aux(ceci->les_parentes[PETIT_FRERE], decalage,mon_fichier);
-//     }
-// }
-
-// void mon_sauvegarder_enrichi(p_noeud mon_noeud, FILE* mon_fichier){
-//     mon_sauvegarder_enrichi_aux(mon_noeud,0,mon_fichier);
-// }
-// void sauvegarder_enrichi_texte(){
-//     sauvegarder_enrichi(premier_noeud, mon_fichier);
-// }
-
 void sauvegarde(p_noeud noeud){
     if(noeud->les_parentes[PERE] == NULL){
         if(noeud->les_parentes[GRAND_FRERE] == NULL){
-            // debugger_noeud(noeud);
             sauvegarder_elabore(noeud);
         } else {
             sauvegarde(noeud->les_parentes[GRAND_FRERE]);
         }
-        // afficher_elabore(noeud->les_parentes[PREMIER_FILS]->les_parentes[PREMIER_FILS]);
-        // debugger_noeud(noeud->les_parentes[PERE]);
     } else {
         sauvegarde(noeud->les_parentes[PERE]);
     }
@@ -283,26 +209,12 @@ void sauvegarde(p_noeud noeud){
 void commencer_lecture(){
     while(myChar != EOF){
         consommerChar();
-        // test();
     }
     mon_fichier = fopen("save.txt","w");
-    // debugger_noeud(premier_noeud->les_parentes[GRAND_FRERE]->les_parentes[DERNIER_FILS]->les_parentes[DERNIER_FILS]->les_parentes[DERNIER_FILS]);
-    // printf("%d", nbChevrons);
     affichage();
     charger_fichier(mon_fichier);
     sauvegarde(premier_noeud);
     fclose(mon_fichier);
-    // mon_sauvegarder_enrichi(premier_noeud, mon_fichier);
-    // if(premier_noeud->les_parentes[GRAND_FRERE] == NULL){
-    //     if(premier_noeud->les_parentes[PERE] == NULL){
-    //         mon_sauvegarder_enrichi(premier_noeud,mon_fichier);
-    //     } else {
-    //         mon_sauvegarder_enrichi(premier_noeud->les_parentes[PERE],mon_fichier);
-    //     }
-    // } else {
-    //     mon_sauvegarder_enrichi(premier_noeud->les_parentes[GRAND_FRERE],mon_fichier);
-    // }
-    
 }
 
 
