@@ -275,6 +275,47 @@ void afficher_elabore(t_arbre_nanodom ceci){
     }
 }
 
+void sauvegarder_elabore(t_arbre_nanodom ceci){
+    if(ceci != NULL){
+        if(ceci->l_etiquette == TITRE || ceci->l_etiquette == ITEM || ceci->l_etiquette == IMPORTANT){
+            if(ceci->les_parentes[PREMIER_FILS] != NULL){
+                sauvegarder_elabore(ceci->les_parentes[PREMIER_FILS]);
+            }
+            if(ceci->les_parentes[PETIT_FRERE] != NULL){
+                sauvegarder_elabore(ceci->les_parentes[PETIT_FRERE]);
+            }
+        } else if(ceci->l_etiquette == MOT ){
+            if(ceci->les_parentes[GRAND_FRERE] == NULL){
+                s_entamer_ligne();
+            } else {
+                if(ceci->les_parentes[GRAND_FRERE]->l_etiquette != MOT){
+                    s_entamer_ligne();
+                }
+            }
+            s_ecrire_mot(ceci->le_contenu);
+            if(ceci->les_parentes[PETIT_FRERE] == NULL){
+                s_terminer_ligne();
+            } else {
+                if(ceci->les_parentes[PETIT_FRERE]->l_etiquette != MOT){
+                    s_terminer_ligne();
+                }
+                sauvegarder_elabore(ceci->les_parentes[PETIT_FRERE]);
+            }
+        } else {
+            s_ouvrir_bloc();
+            if(ceci->les_parentes[PREMIER_FILS] != NULL){
+                sauvegarder_elabore(ceci->les_parentes[PREMIER_FILS]);
+            }
+            s_fermer_bloc();
+
+            if(ceci->les_parentes[PETIT_FRERE] != NULL){
+                sauvegarder_elabore(ceci->les_parentes[PETIT_FRERE]);
+            }
+        }
+    }
+}
+
+
 void detruire_nanodom(t_arbre_nanodom* ceci){
     if(*ceci != NULL){
         if((*ceci)->les_parentes[PREMIER_FILS] != NULL){

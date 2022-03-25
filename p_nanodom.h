@@ -70,4 +70,6 @@ void sauvegarder_enrichi(t_arbre_nanodom ceci, FILE* fichier);
 
 void detruire_nanodom(t_arbre_nanodom* ceci);
 
+void sauvegarder_elabore(t_arbre_nanodom ceci);
+
 #endif

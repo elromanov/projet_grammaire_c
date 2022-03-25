@@ -1,8 +1,22 @@
 <document>
+    <titre>Sujet de projet Nanoml</titre>
     <section>
-        <titre> Salut </titre>
+        <titre>Grammaire</titre>
+        Inspiree par la forme BN.
+        <liste>
+            <item>texte_enrichi ::= document annexes</item>
+            <item>document ::= 'debut_doc' contenu 'fin_doc'</item>
+            <item>annexes ::= {'debut_annexe' contenu 'fin_annexe'} </item>
+        </liste>
+    </section>
+    <section>
+        <titre> Rendu </titre>
     </section>
 </document>
 <annexe>
-    <titre> Bonjour </titre>
+    <liste>
+        <item>Auteur: Weinberg Benjamin</item>
+        <item>Relecteur: Jacques Julie</item>
+        <item>Relecteur: Gouvy Nicolas</item>
+    </liste>
 </annexe>
